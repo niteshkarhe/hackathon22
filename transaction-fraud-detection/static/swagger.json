@@ -16,24 +16,24 @@
   ],
   "tags": [
     {
-      "name": "Book Request",
-      "description": "Example API for requesting and return book requests"
+      "name": "Fraud Detection System",
+      "description": "APIs for requesting and returning fraud transaction"
     }
   ],
   "paths": {
-    "/request": {
+    "/fraud/predict": {
       "post": {
         "tags": [
-          "Book Request"
+          "Predict Fraud Transaction"
         ],
-        "summary": "Create a new book request system",
+        "summary": "Predict Transaction is Fraud or not",
         "requestBody": {
-          "description": "Book Request Post Object",
+          "description": "Predict Transaction is Fraud or not",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bookRequestPostBody"
+                "$ref": "#/components/schemas/TransactionPostBody"
               }
             }
           }
@@ -64,16 +64,44 @@
           }
         }
       },
-      "bookRequestPostBody": {
+      "TransactionPostBody": {
         "type": "object",
         "properties": {
-          "title": {
+          "step": {
+            "type": "integer",
+            "format": "integer"
+          },
+          "type": {
+            "type": "string",
+            "format": "number"
+          },
+          "amount": {
+            "type": "number",
+            "format": "number"
+          },
+          "nameOrig": {
             "type": "string",
             "format": "string"
           },
-          "email": {
+          "oldbalanceOrg": {
+            "type": "number",
+            "format": "number"
+          },
+          "newbalanceOrig": {
+            "type": "number",
+            "format": "number"
+          },
+          "nameDest": {
             "type": "string",
-            "format": "email"
+            "format": "string"
+          },
+          "oldbalanceDest": {
+            "type": "number",
+            "format": "number"
+          },
+          "newbalanceDest": {
+            "type": "number",
+            "format": "number"
           }
         }
       },
