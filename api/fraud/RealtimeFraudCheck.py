@@ -13,20 +13,30 @@ class RealtimeFraudCheck:
         input_trans_df["explaination"] = ''
 
         for index, row in input_trans_df.iterrows():
-            prevTransaction = self.data[(self.data['nameOrig'] == row['fromAccNo']) & (
-                        self.data['nameDest'] == row['destAccNo'])]
-
             # If previous transaction was Fraud
             if (row['type'] == 'PAYMENT' or  row['type'] == 'TRANSFER' or row['type'] == 'DEBIT'):
                 transfer_perc = (row['amount'] / row['oldbalanceOrg']) * 100
 
-                if (not prevTransaction.empty) and prevTransaction.iloc[0, prevTransaction.columns.get_loc('isFraud')] == 'Fraud':
-                    # print("fraud transaction")
-                    input_trans_df.at[index, 'prediction'] = "Fraud"
-                    input_trans_df.at[index, 'explaination'] = "Previous Transaction of same customer was Fraud"
+                prevTransaction = self.data[(self.data['nameOrig'] == row['fromAccNo']) & (
+                        self.data['nameDest'] == row['destAccNo'])]
 
-                elif prevTransaction.empty and transfer_perc >= 80.0 :
+                if prevTransaction.empty and transfer_perc >= 80.0 :
                     print("fraud transaction")
                     input_trans_df.at[index, 'prediction'] = "Fraud"
                     input_trans_df.at[index, 'explaination'] = "Huge amount transfer to new Customer"
+
+
+            destAccNoTransactions = self.data[(self.data['nameDest'] == row['destAccNo'])]
+            if not destAccNoTransactions.empty:
+                for prevTr in prevTransaction.itertuples():
+                    prevTrDict = prevTr._asdict()
+                    if prevTrDict['isFraud'] == 'Fraud':
+                        # if prevTr.iloc[prevTrIdx, prevTr.columns.get_loc('isFraud')] == 'Fraud':
+                        # print("fraud transaction")
+                        input_trans_df.at[index, 'prediction'] = "Fraud"
+                        input_trans_df.at[index, 'explaination'] = "Previous Transaction of same customer was Fraud"
+                        break
+
+                groupedTrans = destAccNoTransactions.groupby(by="nameOrig").count()
+                print(groupedTrans)
 
