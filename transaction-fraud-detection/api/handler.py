@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 from fraud.Fraud import Fraud
-from flask import Flask, request, Response
+from flask import request, Response, Flask
 
 # loading model
 model = joblib.load('../models/model_cycle1.joblib')
@@ -39,7 +39,7 @@ def churn_predict():
         
         
     else:
-        return Reponse('{}', status=200, mimetype='application/json')
+        return Response('{}', status=200, mimetype='application/json')
 
 if __name__ == '__main__':
     app.run('127.0.0.1') 
