@@ -1,0 +1,70 @@
+<div class="bootstrap-wrapper">
+    <div class="container mt">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="container text-center">
+                    <img src="/assets/password.png" style="width: 100px;" alt="" class="img-fluid">
+                </div>
+                <h1 class="text-center">Transction Details</h1>
+                    <form (ngSubmit)="onSubmit()">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>
+                                Amount
+                            </mat-label>
+                            <input  [(ngModel)]="transaction.amount" type="text" name="username" required matInput />
+                        </mat-form-field>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>
+                                Type
+                            </mat-label>
+                            <input type="text" name="type" matInput required [(ngModel)]="transaction.type"/>
+                        </mat-form-field>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>
+                                fromAccNo
+                            </mat-label>
+                            <input type="text" name="fromAccNo" matInput required [(ngModel)]="transaction.fromAccNo"/>
+                        </mat-form-field>
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>
+                                destAccNo
+                            </mat-label>
+                            <input type="text" name="destAccNo" matInput required [(ngModel)]="transaction.destAccNo"/>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>
+                                oldbalanceOrg
+                            </mat-label>
+                            <input type="text" name="oldbalanceOrg" matInput required [(ngModel)]="transaction.oldbalanceOrg"/>
+                        </mat-form-field>
+                        <div class="container text-center">
+                            <button type="submit" mat-raised-button color="primary" >
+                                Login
+                            </button>
+                            <button style="margin-left: 10px;" type="reset" mat-raised-button color="accent" >
+                                Reset
+                            </button>
+                            {{transaction}}
+                        </div>
+                       
+                    </form>
+
+
+
+
+
+
+
+
+
+
+
+                   
+                
+
+
+            </div>
+        </div>
+    </div>
+</div>

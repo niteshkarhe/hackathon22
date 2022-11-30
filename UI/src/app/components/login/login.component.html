@@ -1,0 +1,37 @@
+<div class="bootstrap-wrapper">
+    <div class="container mt">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="container text-center">
+                    <img src="/assets/password.png" style="width: 100px;" alt="" class="img-fluid">
+                </div>
+                <h1 class="text-center">Login Here !!</h1>
+                <form (ngSubmit)="onSubmit()">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>
+                            Username
+                        </mat-label>
+                        <input  [(ngModel)]="cedentials.username" type="text" name="username" required matInput />
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>
+                            Password
+                        </mat-label>
+                        <input type="password" name="username" matInput required [(ngModel)]="cedentials.password"/>
+                    </mat-form-field>
+                    <div class="container text-center">
+                        <button type="submit" mat-raised-button color="primary" >
+                            Login
+                        </button>
+                        <button style="margin-left: 10px;" type="reset" mat-raised-button color="accent" >
+                            Reset
+                        </button>
+                    </div>
+                    {{cedentials | json}}
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
