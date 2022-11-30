@@ -6,6 +6,10 @@ __pycache__/
 # SDK
 .idea/
 
+# Angular
+UI/node_modules
+UI/e2e
+
 # C extensions
 *.so
 
