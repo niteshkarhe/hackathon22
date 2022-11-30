@@ -1,35 +1,28 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 
-class Fraud:
+class MLAlgoFraudCheck:
     def __init__(self):
-        self.data = pd.read_csv("fraud_0.1origbase.csv")
+        self.data = pd.read_csv("../data/customer_transactions.csv")
         self.data["type"] = self.data["type"].map({"CASH_OUT": 1, "PAYMENT": 2,
-                                         "CASH_IN": 3, "TRANSFER": 4,
-                                         "DEBIT": 5})
+                                                   "CASH_IN": 3, "TRANSFER": 4,
+                                                   "DEBIT": 5})
         self.data["isFraud"] = self.data["isFraud"].map({0: "No Fraud", 1: "Fraud"})
 
-
-
     def get_decision_tree_prediction(self, input_trans_pd):
-
         # type, amount, oldbalanceOrg, newbalanceOrig
         transaction_pd = input_trans_pd.drop(columns=['fromAccNo', 'destAccNo'], axis=1)
 
-
         # transform the values of the isFraud column into No Fraud and Fraud labels
         transaction_pd["type"] = transaction_pd["type"].map({"CASH_OUT": 1, "PAYMENT": 2,
-                                         "CASH_IN": 3, "TRANSFER": 4,
-                                         "DEBIT": 5})
+                                                             "CASH_IN": 3, "TRANSFER": 4,
+                                                             "DEBIT": 5})
         transaction_pd["type"] = transaction_pd["type"].astype(float)
 
         transaction_pd.iloc[0]
         json_csv = transaction_pd.to_numpy()
-
 
         # splitting the data
         x = pd.np.array(self.data[["type", "amount", "oldbalanceOrg", "newbalanceOrig"]])
@@ -43,7 +36,6 @@ class Fraud:
         print("Dec Tree Accuracy = " + str(dec_tree_accuracy))
         input_trans_pd['decisionTreeAccuracy'] = dec_tree_accuracy
 
-
         # prediction
         # features = [type, amount, oldbalanceOrg, newbalanceOrig]
         features = pd.np.array(json_csv)
@@ -51,10 +43,6 @@ class Fraud:
         dec_tree_predict = dec_tree_model.predict(features)
         print("Dec Tree Prediction = " + dec_tree_predict)
         input_trans_pd['decisionTreePrediction'] = dec_tree_predict
-
-
-
-
 
         #
         # rand_for_model = RandomForestClassifier(class_weight='balanced')
@@ -85,4 +73,3 @@ class Fraud:
         # input_trans_pd['LogisticRegressionPrediction'] = log_regr_predict
 
         return input_trans_pd
-
