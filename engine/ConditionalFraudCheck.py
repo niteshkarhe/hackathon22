@@ -11,7 +11,7 @@ class ConditionalFraudCheck:
 
     def check_transaction_to_new_customer(self, input_trans_df):
         input_trans_df["prediction"] = 'No Fraud'
-        input_trans_df["explaination"] = ''
+        input_trans_df["indication"] = ''
 
         for index, row in input_trans_df.iterrows():
             # If previous transaction was Fraud
@@ -22,9 +22,8 @@ class ConditionalFraudCheck:
                         self.data['nameDest'] == row['destAccNo'])]
 
                 if prevTransaction.empty and transfer_perc >= 80.0:
-                    print("engine transaction")
-                    input_trans_df.at[index, 'prediction'] = "Fraud"
-                    input_trans_df.at[index, 'explaination'] = "Huge amount transfer to new Customer"
+                    input_trans_df.at[index, 'prediction'] = "Can be Fraud"
+                    input_trans_df.at[index, 'indication'] = "Huge amount transfer to new Customer"
 
             destAccNoTransactions = self.data[(self.data['nameDest'] == row['destAccNo'])]
             if not destAccNoTransactions.empty:
@@ -33,9 +32,16 @@ class ConditionalFraudCheck:
                     if prevTrDict['isFraud'] == 'Fraud':
                         # if prevTr.iloc[prevTrIdx, prevTr.columns.get_loc('isFraud')] == 'Fraud':
                         # print("engine transaction")
-                        input_trans_df.at[index, 'prediction'] = "Fraud"
-                        input_trans_df.at[index, 'explaination'] = "Previous Transaction of same customer was Fraud"
+                        input_trans_df.at[index, 'prediction'] = "Can be Fraud"
+                        input_trans_df.at[index, 'indication'] = "Previous Transaction of same customer was Fraud"
                         break
 
-                groupedTrans = destAccNoTransactions.groupby(by="nameOrig").count()
-                print(groupedTrans)
+                if input_trans_df.at[index, 'prediction'] != '':
+                    destAccNoAvgTrans = destAccNoTransactions.groupby("nameOrig").agg({'nameOrig': ['count']}).max() / destAccNoTransactions.shape[0] * 100
+                    print(destAccNoAvgTrans)
+                    if destAccNoAvgTrans[0] <= 50:
+                        input_trans_df.at[index, 'prediction'] = "Can be Fraud"
+                        input_trans_df.at[index, 'indication'] = "Destination Customer flagged as Fraud because New " \
+                                                                 "Customer Transactions are More than Average "
+
+
