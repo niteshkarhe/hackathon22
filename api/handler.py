@@ -4,11 +4,14 @@ from flask import Response, Flask, request
 from engine.MLAlgoFraudCheck import MLAlgoFraudCheck
 from engine.ConditionalFraudCheck import ConditionalFraudCheck
 from validator.RequestValidator import validate
+from flask_cors import CORS, cross_origin
 
 # initialize API
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-
+@cross_origin()
 @app.route('/fraud/predict', methods=['POST'])
 def fraud_predict():
     input_transaction = request.get_json()
