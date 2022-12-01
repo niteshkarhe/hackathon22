@@ -17,19 +17,20 @@ export class HomeComponent implements OnInit {
   dataSource: FraudPrevention[] = [];
   transactionJSON;
 
+  selectedType:string;
+  amount:number;
+  fromAccNo:string;
+  destAccNo:string;
+  oldbalanceOrg:number;
 
-  transaction: Transaction = {
-    'type': 'TRANSFER',
-    'amount': 8000.00,
-    'fromAccNo': "C905679615",
-    'destAccNo': "CC572787442",
-    'oldbalanceOrg': 10000.00
-  };
+
+  transaction: Transaction;
 
   ITEMS = [{name: 1, value:'Single Transaction'}, {name: 2, value:'JSON'}];
+  transTypes = ['CASH_IN', 'CASH_OUT' ,'DEBIT' ,'PAYMENT' ,'TRANSFER']
 
-  obj = {'type': 'Type', 'amount':'Amount', 'fromAccNo':'From Acc No', 'destAccNo':'Dest Acc No','oldbalanceOrg':'Old Balance Org','newbalanceOrg':'New Balance Org','prediction':'Prediction','indication':'Indication','Decision Tree Accuracy':'Decision Tree Accuracy','decisionTreePrediction':'Decision Tree Prediction'};
-  displayedColumns = ['type', 'amount', 'fromAccNo', 'destAccNo','oldbalanceOrg','newbalanceOrg','prediction','indication','decisionTreeAccuracy','decisionTreePrediction'];
+  obj = {'type': 'Type', 'amount':'Amount', 'fromAccNo':'Sender A/c No', 'destAccNo':'Receiver A/c No','oldbalanceOrg':'Sender Old Balance','newbalanceOrg':'Sender New Balance','prediction':'Prediction','decisionTreeAccuracy':'ML Accuracy','decisionTreePrediction':'ML Prediction','indication':'Indication'};
+  displayedColumns = ['type', 'amount', 'fromAccNo', 'destAccNo','oldbalanceOrg','newbalanceOrg','prediction','decisionTreeAccuracy','decisionTreePrediction','indication'];
   columnsToDisplay: string[] = this.displayedColumns.slice();
 
   constructor(private http: HttpClient, private service : RestApiService) { }
@@ -42,6 +43,16 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(){
+
+      this.transaction = {
+        'type': this.selectedType,
+        'amount': this.amount,
+        'fromAccNo': this.fromAccNo,
+        'destAccNo': this.destAccNo,
+        'oldbalanceOrg': this.oldbalanceOrg
+      };
+
+
         this.loading = true;
 
     this.http.post<FraudPrevention[]>("http://localhost:5000/fraud/predict", (this.showForm)?this.transaction:JSON.parse(this.transactionJSON)).subscribe(data=> {
@@ -59,14 +70,15 @@ export class HomeComponent implements OnInit {
     showFormFn(){
       this.showForm = true;
       this.showJSON = false;
+      this.dataSource = [];
     }
     showJSONFn() {
       this.showForm = false;
       this.showJSON = true;
+      this.dataSource = [];
     }
 
 }
-
 export interface FraudPrevention {
   type: string;
   amount: number;

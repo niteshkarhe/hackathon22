@@ -14,44 +14,43 @@
               </ul>
 
                 <div class="container text-center" style="margin-top:50px">
-                    <form (ngSubmit)="onSubmit()">
+                    <form  (ngSubmit)="onSubmit()">
                       <div  *ngIf="showForm">
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
                                 Amount
                             </mat-label>
-                            <input  [(ngModel)]="transaction.amount" type="text" name="username" required matInput />
+                            <input  [(ngModel)]="amount" type="text" name="amount" required matInput  value=9900/>
                         </mat-form-field>
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
                                 Type
                             </mat-label>
-                                <select [(ngModel)]="transaction.type" appearance="fill" matNativeControl required>
-                                    <option value="CASH_IN" appearance="fill">CASH_IN</option>
-                                    <option value="CASH_OUT" appearance="fill">CASH_OUT</option>
-                                    <option value="DEBIT" appearance="fill">DEBIT</option>
-                                    <option value="PAYMENT" appearance="fill">PAYMENT</option>
-                                    <option value="TRANSFER" appearance="fill">TRANSFER</option>
-                                </select>
+
+                          <select [(ngModel)]="selectedType" appearance="fill" matNativeControl name="selectedType" id="selectedType">
+                              <option *ngFor="let trans of transTypes" [value]="trans">
+                                {{trans}}
+                              </option>
+                          </select>
                         </mat-form-field>
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
-                                fromAccNo
+                                Sender A/c No
                             </mat-label>
-                            <input type="text" name="fromAccNo" matInput required [(ngModel)]="transaction.fromAccNo"/>
+                            <input type="text" name="fromAccNo" matInput required [(ngModel)]="fromAccNo" value="C905679615"/>
                         </mat-form-field>
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
-                                destAccNo
+                                Receiver A/c No
                             </mat-label>
-                            <input type="text" name="destAccNo" matInput required [(ngModel)]="transaction.destAccNo"/>
+                            <input type="text" name="destAccNo" matInput required [(ngModel)]="destAccNo" value="CC572787442"/>
                         </mat-form-field>
 
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
-                                oldbalanceOrg
+                                Sender Old Balance
                             </mat-label>
-                            <input type="text" name="oldbalanceOrg" matInput required [(ngModel)]="transaction.oldbalanceOrg"/>
+                            <input type="text" name="oldbalanceOrg" matInput required [(ngModel)]="oldbalanceOrg" value=10000.00/>
                         </mat-form-field>
                       </div>
 
@@ -59,11 +58,11 @@
                         <mat-form-field class="example-full-width">
                           <mat-label>Transaction JSON Array</mat-label>
                           <textarea matInput placeholder="Transaction JSON Array" name="transactionJSON" [(ngModel)]="transactionJSON"
-                          cols="500" rows="5" style="border:'1px solid'"></textarea>
+                          cols="500" rows="20" style="border:'1px solid'"></textarea>
                         </mat-form-field>
                       </div>
                         <div class="container text-center">
-                            <button type="submit" mat-raised-button color="primary" >
+                            <button type="submit"  mat-raised-button color="primary" >
                                 Submit Transaction
                             </button>
                             <button style="margin-left: 10px;" type="reset" mat-raised-button color="accent" >
@@ -79,11 +78,10 @@
 
       <br><br>
 
-      <img *ngIf="loading" src="assets/spinner.gif" style="margin-left:50px" />
+      <img *ngIf="loading" src="assets/spinner.gif" style="margin-left:150px" />
 
-      <br><br>
 
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.length > 0">
+      <table style="margin-top:50px" mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.length > 0">
         <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
           <th mat-header-cell *matHeaderCellDef> {{obj[column]}} </th>
           <td mat-cell *matCellDef="let element"> {{element[column]}} </td>

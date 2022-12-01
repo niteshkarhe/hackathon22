@@ -22,6 +22,8 @@ def fraud_predict():
         else:
             input_trans_pd = pd.DataFrame(input_transaction, columns=input_transaction[0].keys())
 
+        input_trans_pd[['oldbalanceOrg', 'amount']] = input_trans_pd[['oldbalanceOrg', 'amount']].astype(float)
+
         if validate(input_trans_pd):
             return Response('', status=400, mimetype='application/json')
 

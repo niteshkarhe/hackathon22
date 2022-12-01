@@ -63,3 +63,9 @@ table {
 mat-form-field {
   padding-left: 30px;
 }
+
+mat-header-row {
+   font-weight: bold;
+  font-size: 40px;
+
+}

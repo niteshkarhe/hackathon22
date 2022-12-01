@@ -21,7 +21,7 @@ class ConditionalFraudCheck:
                 prevTransaction = self.data[(self.data['nameOrig'] == row['fromAccNo']) & (
                         self.data['nameDest'] == row['destAccNo'])]
 
-                if prevTransaction.empty and transfer_perc >= 80.0:
+                if prevTransaction.empty and transfer_perc >= 96.0:
                     input_trans_df.at[index, 'prediction'] = "Can be Fraud"
                     input_trans_df.at[index, 'indication'] = "Huge amount transfer to new Customer"
 
@@ -33,7 +33,7 @@ class ConditionalFraudCheck:
                         # if prevTr.iloc[prevTrIdx, prevTr.columns.get_loc('isFraud')] == 'Fraud':
                         # print("engine transaction")
                         input_trans_df.at[index, 'prediction'] = "Can be Fraud"
-                        input_trans_df.at[index, 'indication'] = "Previous Transaction of same customer was Fraud"
+                        input_trans_df.at[index, 'indication'] = "Previous Transaction of Sender customer was Fraud"
                         break
 
                 if input_trans_df.at[index, 'prediction'] != '':
