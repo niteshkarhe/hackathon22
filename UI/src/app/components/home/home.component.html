@@ -2,11 +2,20 @@
     <div class="container mt">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <div class="container text-center">
-                    <img src="/assets/password.png" style="width: 100px;" alt="" class="img-fluid">
-                </div>
-                <h1 class="text-center">Transction Details</h1>
+              <ul class="list-group" style="list-style:none">
+                    <li class="list-group-item" >
+                      <input type="radio" (click)="showFormFn()" name="input_1" value=true checked="checked"/>
+                      Single Transaction
+
+                      <input type="radio" (click)="showJSONFn()" name="input_1" value=false/>
+                      JSON
+
+                    </li>
+              </ul>
+
+                <div class="container text-center" style="margin-top:50px">
                     <form (ngSubmit)="onSubmit()">
+                      <div  *ngIf="showForm">
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
                                 Amount
@@ -17,7 +26,13 @@
                             <mat-label>
                                 Type
                             </mat-label>
-                            <input type="text" name="type" matInput required [(ngModel)]="transaction.type"/>
+                                <select [(ngModel)]="transaction.type" appearance="fill" matNativeControl required>
+                                    <option value="CASH_IN" appearance="fill">CASH_IN</option>
+                                    <option value="CASH_OUT" appearance="fill">CASH_OUT</option>
+                                    <option value="DEBIT" appearance="fill">DEBIT</option>
+                                    <option value="PAYMENT" appearance="fill">PAYMENT</option>
+                                    <option value="TRANSFER" appearance="fill">TRANSFER</option>
+                                </select>
                         </mat-form-field>
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>
@@ -38,33 +53,45 @@
                             </mat-label>
                             <input type="text" name="oldbalanceOrg" matInput required [(ngModel)]="transaction.oldbalanceOrg"/>
                         </mat-form-field>
+                      </div>
+
+                      <div  *ngIf="showJSON">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Transaction JSON Array</mat-label>
+                          <textarea matInput placeholder="Transaction JSON Array" name="transactionJSON" [(ngModel)]="transactionJSON"
+                          cols="500" rows="5" style="border:'1px solid'"></textarea>
+                        </mat-form-field>
+                      </div>
                         <div class="container text-center">
                             <button type="submit" mat-raised-button color="primary" >
-                                Login
+                                Submit Transaction
                             </button>
                             <button style="margin-left: 10px;" type="reset" mat-raised-button color="accent" >
                                 Reset
                             </button>
-                            {{transaction}}
                         </div>
-                       
+
                     </form>
-
-
-
-
-
-
-
-
-
-
-
-                   
-                
-
-
             </div>
+
         </div>
+
+      <br><br>
+
+      <img *ngIf="loading" src="assets/spinner.gif" style="margin-left:50px" />
+
+      <br><br>
+
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.length > 0">
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+          <th mat-header-cell *matHeaderCellDef> {{obj[column]}} </th>
+          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table>
+
+
     </div>
 </div>

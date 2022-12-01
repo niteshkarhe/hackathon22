@@ -15,6 +15,8 @@ import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { JsonTypeComponent } from './components/json-type/json-type.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     DashboardComponent,
     JsonTypeComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]
